@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.04, y: 2.3232, z: 0}
-  m_LocalScale: {x: 0.8972, y: 1.0512, z: 1}
+  m_LocalScale: {x: 1.263486, y: 1.263486, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3032399133337486615, guid: a7373d273adc89b47940628951b75001, type: 3}
+  m_Sprite: {fileID: -343246354001190725, guid: d2178a40cdc235d4789c0953fa67b2c9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,6 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025132123eb379949ad2f33b3d136ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chanceDeAtaque: 0.8
-  chanceDeVulnerabilidade: 0.5
+  chanceDeAtaque: 0
+  chanceDeVulnerabilidade: 1
   tempoEntreAcoes: 1.5
+  life: 3
+  chanceToStun: 0.3

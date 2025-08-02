@@ -123,6 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025132123eb379949ad2f33b3d136ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chanceDeAtaque: 0.5
+  chanceDeAtaque: 0.49
   chanceDeVulnerabilidade: 0.8
   tempoEntreAcoes: 2

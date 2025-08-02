@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -8,10 +9,12 @@ public class EnemyController : MonoBehaviour
 
     [Header("Intervalo entre ações")]
     public float tempoEntreAcoes = 2f; // tempo em segundos
+    public int life = 3;
+    public float chanceToStun = 0.4f;
 
     private Animator animator;
     private float tempoProximaAcao;
-    public int teste = 1;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -60,6 +63,7 @@ public class EnemyController : MonoBehaviour
     {
         animator.SetBool("atack", false);
         animator.SetBool("vulne", false);
+        animator.SetBool("dmg", false);
     }
 
     public void RealizarAtack()
@@ -68,6 +72,8 @@ public class EnemyController : MonoBehaviour
 
         if (player != null)
         {
+            GameManager managerScript = GameObject.FindObjectOfType<GameManager>();
+            SFXManager sfxManager = GameObject.FindObjectOfType<SFXManager>();
             Animator playerAnimator = player.GetComponent<Animator>();
             if (playerAnimator != null)
             {
@@ -80,13 +86,16 @@ public class EnemyController : MonoBehaviour
                     int vidaAtual = PlayerPrefs.GetInt("Life", 3);
                     vidaAtual--;
                     PlayerPrefs.SetInt("Life", vidaAtual);
+                    managerScript.RemoveHearts();
+                    sfxManager.PlayAhhSound();
 
                     if (vidaAtual <= 0)
                     {
-                        GameManager managerScript = GameObject.FindObjectOfType<GameManager>();
                         if (managerScript != null)
                         {
                             managerScript.ActivateGameOverPanel();
+                            chanceDeAtaque = 0;
+                            chanceDeVulnerabilidade = 0;
                         }
                         else
                         {
@@ -105,5 +114,59 @@ public class EnemyController : MonoBehaviour
         {
             Debug.LogWarning("Player não encontrado na cena.");
         }
+    }
+
+    public void EnemyCallPlayPunchSound()
+    {
+        SFXManager sfxManager = FindObjectOfType<SFXManager>();
+        GameObject inimigo = GameObject.FindGameObjectWithTag("Player");
+
+        Animator animator = inimigo.GetComponent<Animator>();
+        if (animator != null)
+        {
+            bool def = animator.GetBool("def");
+
+            if (!def)
+            {
+                sfxManager.PlayPunchSound();
+                StartCoroutine(WaitAndCallOutchSound());
+            }
+            else
+            {
+                sfxManager.PlayPunchDefendSound();
+            }
+        }
+    }
+
+    public IEnumerator WaitAndCallOutchSound()
+    {
+        SFXManager sfxManager = FindObjectOfType<SFXManager>();
+        yield return new WaitForSeconds(0.2f);
+        sfxManager.PlayOutchSound();
+    }
+
+    public void ActivateVulne()
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetBool("vulne", true);
+        }
+        else
+        {
+            Debug.LogWarning("Animator não encontrado no GameObject.");
+        }
+    }
+
+    public void CallChargeSound()
+    {
+        SFXManager sfxManager = FindObjectOfType<SFXManager>();
+        sfxManager.PlayChargeSound();
+    }
+
+    public void CallConfusedSound()
+    {
+        SFXManager sfxManager = FindObjectOfType<SFXManager>();
+        sfxManager.PlayConfusedSound();
     }
 }
