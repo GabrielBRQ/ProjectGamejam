@@ -58,6 +58,7 @@ public class PlayerControler : MonoBehaviour
                 }
                 else
                 {
+                    animator.SetBool("def", true);
                     Debug.Log("Inimigo não está vulnerável.");
                 }
             }
@@ -95,16 +96,27 @@ public class PlayerControler : MonoBehaviour
             // Desativa o Animator para evitar conflito de posição
             Animator anim = inimigo.GetComponent<Animator>();
             if (anim != null)
+            {
+                anim.SetBool("vulne", false);
+                anim.SetBool("dmg", false);
                 anim.enabled = false;
+            }
 
             // Escolhe uma direção aleatória em X
-            float direcaoX = Random.Range(5f, 10f);
+            float direcaoX = Random.Range(5f, 15f);
             direcaoX *= Random.value < 0.5f ? -1f : 1f;
 
-            Vector3 posicaoFinal = posicaoInicial + new Vector3(direcaoX, 22f, 0f);
+            Vector3 posicaoFinal = posicaoInicial + new Vector3(direcaoX, 35f, 0f);
 
             float duracao = 0.5f;
             float tempo = 0f;
+
+            // Inicializa a escala em 0.6
+            float scaleInicial = 0.4f;
+            float scaleFinal = 0.1f;
+
+            // Inicializa a rotação
+            float anguloFinal = 720f; // O inimigo irá girar 360 graus
 
             while (tempo < duracao)
             {
@@ -113,7 +125,16 @@ public class PlayerControler : MonoBehaviour
 
                 if (inimigo != null)
                 {
+                    // Movimento suave da posição
                     inimigo.transform.position = Vector3.Lerp(posicaoInicial, posicaoFinal, t);
+
+                    // Diminuição da escala de 0.6 para 0.1 durante o movimento
+                    float scale = Mathf.Lerp(scaleInicial, scaleFinal, t);
+                    inimigo.transform.localScale = new Vector3(scale, scale, scale);
+
+                    // Rotação suave de 0 a 360 graus durante o movimento (agora no eixo Z)
+                    float anguloAtual = Mathf.Lerp(0f, anguloFinal, t);
+                    inimigo.transform.rotation = Quaternion.Euler(0f, 0f, anguloAtual); // Rota no eixo Z
                 }
 
                 yield return null;
@@ -122,10 +143,12 @@ public class PlayerControler : MonoBehaviour
             Destroy(inimigo);
             Debug.Log("Inimigo destruído após movimento suave.");
 
-
             gameManager.SpawnRandomPrefab();
         }
     }
+
+
+
     public IEnumerator CheckEnemyAttack()
     {
         GameObject enemy = GameObject.FindGameObjectWithTag("enemy");

@@ -13,6 +13,7 @@ public class SFXManager : MonoBehaviour
     public AudioClip outchSound;
     public AudioClip vulneSound;
     public AudioClip chargeSound;
+    public AudioClip chargeFailSound;
     public AudioClip confusedSound;
 
     public void PlayPunchSound()
@@ -63,6 +64,11 @@ public class SFXManager : MonoBehaviour
     public void PlayChargeSound()
     {
         audioSource.PlayOneShot(chargeSound);
+    }
+
+    public void PlayFailSound()
+    {
+        audioSource.PlayOneShot(chargeFailSound);
     }
 
     public void PlayConfusedSound()

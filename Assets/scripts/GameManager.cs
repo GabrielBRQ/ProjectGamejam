@@ -8,10 +8,6 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject[] hearts;
     public float baseValue = 0.1f;
-    void Start()
-    {
-
-    }
 
     public void StartGame()
     {
@@ -40,19 +36,15 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.SetString("DefeatedHero", newHero);
 
-        Vector3 spawnPosition = new Vector3(17f, -0.7f, 0f);
+        Vector3 spawnPosition = new Vector3(17f, -2.51f, 0f);
         GameObject instance = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
 
-        StartCoroutine(MoverParaCentro(instance, new Vector3(0f, -0.7f, 0f), 0.4f));
+        StartCoroutine(MoverParaCentro(instance, new Vector3(-0.86f, -2.51f, 0f), 0.4f));
     }
 
     private IEnumerator MoverParaCentro(GameObject obj, Vector3 destino, float duracao)
     {
         Animator animator = obj.GetComponent<Animator>();
-        if (animator != null)
-        {
-            animator.enabled = false; // Desativa o Animator para não interferir no movimento
-        }
 
         float tempo = 0f;
         Vector3 posInicial = obj.transform.position;
@@ -110,6 +102,17 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("Índice de Life inválido ou GameObject nulo.");
         }
+    }
+
+    public void FecharJogo()
+    {
+        #if UNITY_EDITOR
+            // Se estiver no editor, para a execução
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            // Se for build final, fecha o jogo
+            Application.Quit();
+        #endif
     }
 
 }

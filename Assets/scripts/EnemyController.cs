@@ -64,6 +64,7 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("atack", false);
         animator.SetBool("vulne", false);
         animator.SetBool("dmg", false);
+        animator.SetBool("def", false);
     }
 
     public void RealizarAtack()
@@ -162,6 +163,12 @@ public class EnemyController : MonoBehaviour
     {
         SFXManager sfxManager = FindObjectOfType<SFXManager>();
         sfxManager.PlayChargeSound();
+    }
+
+    public void CallChargeFailSound()
+    {
+        SFXManager sfxManager = FindObjectOfType<SFXManager>();
+        sfxManager.PlayFailSound();
     }
 
     public void CallConfusedSound()
